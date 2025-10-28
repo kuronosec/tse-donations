@@ -4,19 +4,39 @@ import "hardhat-dependency-compiler";
 import "@openzeppelin/hardhat-upgrades";
 import '@nomicfoundation/hardhat-verify';
 
-const privateKey = process.env.ETHEREUM_ADDRESS_PRIVATE_KEY || '1';
+const DEFAULT_PRIVATE_KEY = '0xAAAAAAAA';
+
+const privateKey = process.env.ETHEREUM_ADDRESS_PRIVATE_KEY || DEFAULT_PRIVATE_KEY;
 
 const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: '0.8.20'
+        version: '0.8.20',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 100
+          }
+        }
       },
       {
-        version: '0.8.16'
+        version: '0.8.16',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 100
+          }
+        }
       },
       {
-        version: '0.8.28'
+        version: '0.8.28',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 100
+          }
+        }
       },
     ]
   },

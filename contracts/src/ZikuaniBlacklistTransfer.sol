@@ -40,6 +40,12 @@ contract ZikuaniBlacklistTransfer is
         UserData userData;
     }
 
+    struct InitLists {
+        uint256[] nationalityWhitelist;
+        address[] senderBlacklist;
+        address[] destinationWhitelist;
+    }
+
     struct TransferContext {
         address payable destination;
         address sender;
@@ -72,17 +78,15 @@ contract ZikuaniBlacklistTransfer is
 
     function initialize(
         TransferParams memory params_,
-        uint256[] memory nationalityWhitelist_,
-        address[] memory senderBlacklist_,
-        address[] memory destinationWhitelist_,
+        InitLists memory lists_,
         address registrationSMT_,
         address verifier_,
         uint256 selector_
     ) external initializer {
         __Ownable_init(_msgSender());
-        __SenderBlacklistManager_init(senderBlacklist_);
-        __DestinationRegistry_init(destinationWhitelist_);
-        __NationalityWhitelistManager_init(nationalityWhitelist_);
+        __SenderBlacklistManager_init(lists_.senderBlacklist);
+        __DestinationRegistry_init(lists_.destinationWhitelist);
+        __NationalityWhitelistManager_init(lists_.nationalityWhitelist);
         __AQueryProofExecutor_init(registrationSMT_, verifier_);
 
         transferParams = params_;

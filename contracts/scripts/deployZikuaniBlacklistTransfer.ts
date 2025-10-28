@@ -11,7 +11,6 @@ async function main() {
   // const addresses = addressesJson.amoyAddresses;
   const addresses = addressesJson.blockdagTestnetAddresses;
 
-  const ZKFirmaDigitalCredentialIssuer = addresses.ZKFirmaDigitalCredentialIssuer;
   const verifierAddress = addresses.TD3QueryProofVerifier;
   const registrationSMTAddress = addresses.RegistrationSMTReplicator;
   
@@ -48,21 +47,24 @@ async function main() {
 
   const ZikuaniBlacklistTransferContract = await ethers.getContractFactory("ZikuaniBlacklistTransfer");
 
+  const initLists = {
+    nationalityWhitelist: citizenshipWhitelist,
+    senderBlacklist,
+    destinationWhitelist,
+  };
+
   const ZikuaniBlacklistTransferProxy = await upgrades.deployProxy(
     ZikuaniBlacklistTransferContract,
     [
       transferParams,
-      citizenshipWhitelist,
-      senderBlacklist,
-      destinationWhitelist,
-      ZKFirmaDigitalCredentialIssuer,
+      initLists,
       registrationSMTAddress,
       verifierAddress,
       // Selector bitmask must match the one used when building the proof
       // 2593 decimal == 0xA21
       2593,
     ],
-    { initializer: "__ZikuaniBlacklistTransfer_init" }
+    { initializer: "initialize" }
   );
 
   await ZikuaniBlacklistTransferProxy.waitForDeployment();
