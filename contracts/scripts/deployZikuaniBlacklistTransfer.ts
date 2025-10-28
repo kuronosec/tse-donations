@@ -19,9 +19,13 @@ async function main() {
   const identityCreationTimestampUpperBound = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60;
 
   // Citizen whitelist example: ["CRI"]
-const citizenshipWhitelist = [
-  0x435249, // CRI
-];
+  const citizenshipWhitelist = [
+    0x435249, // CRI
+  ];
+
+  const senderBlacklist  = ["0xE100422ABa51537d8636c64ca594bC0813f3a554"];
+
+  const destinationWhitelist = ["0x86E67a05324A55AF6B2b3bF1A5cBA1778C56A8bE"]
 
   // Example birth date lower bound (e.g., 18 years ago)
   const birthDateLowerbound = Math.floor(Date.now() / 1000) - 18 * 365 * 24 * 60 * 60;
@@ -31,24 +35,26 @@ const citizenshipWhitelist = [
 
   const identityCounterUpperBound = 1;
 
-  const voteParams = {
-    identityCreationTimestampUpperBound,
-    citizenshipWhitelist,
-    birthDateLowerbound,
-    expirationDateLowerBound,
-    identityCounterUpperBound
+  const transferParams = {
+        identityCreationTimestampUpperBound,
+        identityCounterUpperBound,
+        birthDateLowerbound,
+        expirationDateLowerBound
   };
 
-  console.log("Vote params: ", JSON.stringify(voteParams, null, 2));
+  console.log("transfer params: ", JSON.stringify(transferParams, null, 2));
 
   console.log(`verifier contract deployed to ${verifierAddress}`);
 
-  const ZikuaniVoteContract = await ethers.getContractFactory("ZikuaniVote");
+  const ZikuaniBlacklistTransferContract = await ethers.getContractFactory("ZikuaniBlacklistTransfer");
 
-  const ZikuaniVoteProxy = await upgrades.deployProxy(
-    ZikuaniVoteContract,
+  const ZikuaniBlacklistTransferProxy = await upgrades.deployProxy(
+    ZikuaniBlacklistTransferContract,
     [
-      voteParams,
+      transferParams,
+      citizenshipWhitelist,
+      senderBlacklist,
+      destinationWhitelist,
       ZKFirmaDigitalCredentialIssuer,
       registrationSMTAddress,
       verifierAddress,
@@ -56,12 +62,12 @@ const citizenshipWhitelist = [
       // 2593 decimal == 0xA21
       2593,
     ],
-    { initializer: "__ZikuaniVote_init" }
+    { initializer: "__ZikuaniBlacklistTransfer_init" }
   );
 
-  await ZikuaniVoteProxy.waitForDeployment();
+  await ZikuaniBlacklistTransferProxy.waitForDeployment();
 
-  console.log(`ZikuaniVote proxy deployed at ${await ZikuaniVoteProxy.getAddress()}`);
+  console.log(`ZikuaniBlacklistTransfer proxy deployed at ${await ZikuaniBlacklistTransferProxy.getAddress()}`);
 }
 
 main().catch(error => {
