@@ -1,0 +1,37 @@
+npx hardhat run scripts/deployCredentialIssuer.ts --network blockdag-testnet
+
+
+Poseidon2Elements deployed to: 0x6d2994997201227c0120B0ee29155ec53f140254
+Poseidon3Elements deployed to: 0x101670B36685997624496FF17432F2e69913307e
+Poseidon4Elements deployed to: 0x1B95c292a8bD3F095A30B53850F2C2f4f540A252
+[ 'SmtLib deployed to:  0x0eD7ADB5073510b33A4Ea8A46246A4C5E387cE28' ]
+[ 'owner_address:' ]
+[ '0x86E67a05324A55AF6B2b3bF1A5cBA1778C56A8bE' ]
+[ '======== Credential issuer: deploy started ========' ]
+ClaimBuilder deployed to: 0x497002D0180D631A262630A8406051EFFFEF40Fb
+IdentityLib deployed to: 0x206b2C6Cb964aE11894984AEE68116a2645d82dC
+[
+  '======== Credential issuer: deploy ZK Firma Digital verifier contracts ========'
+]
+[
+  'Verifier contract deployed to address 0x03d6ec1E280973dd034d00E3cefdd1F433434B6d from 0x86E67a05324A55AF6B2b3bF1A5cBA1778C56A8bE'
+]
+[
+  'ZKFirmaDigital contract deployed to address 0xa6814Af35Acd10244fea8A9f07cC23625d93aD23 from 0x86E67a05324A55AF6B2b3bF1A5cBA1778C56A8bE'
+]
+Warning: Potentially unsafe deployment of src/ZKFirmaDigitalCredentialIssuer.sol:ZKFirmaDigitalCredentialIssuer
+
+    You are using the `unsafeAllow.external-library-linking` flag to include external libraries.
+    Make sure you have manually checked that the linked libraries are upgrade safe.
+
+[
+  'ZKFirmaDigitalCredentialIssuer contract deployed to address 0x51105993F8f07cd002c0CAbcd8F312b01E1A776E from 0x86E67a05324A55AF6B2b3bF1A5cBA1778C56A8bE'
+]
+[ '======== Credential issuer: deploy completed ========' ]
+
+=====================================================================================
+
+npx hardhat run scripts/deployVotingContract.ts --network blockdag-testnet
+
+ZKFirmaDigitalCredentialIssuer contract deployed to 0x51105993F8f07cd002c0CAbcd8F312b01E1A776E
+ZKFirmaDigitalVote contract deployed to 0xEBa2A3f6c6652C9C5822023BF4d2F6076b2ca804
